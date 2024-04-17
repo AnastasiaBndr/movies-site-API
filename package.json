@@ -14,7 +14,7 @@
   "author": "AnastasiaBndr",
   "license": "ISC",
   "dependencies": {
-    "cors": "2.8.5",
+    "cors": "2.8.5","cross-env": "^7.0.3",
     "express": "^4.19.2",
     "joi": "^17.12.3",
     "mongoose": "^8.3.2",
@@ -22,7 +22,7 @@
     "yarn": "^1.22.22"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3",
+    
     "eslint": "7.19.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard": "16.0.3",
