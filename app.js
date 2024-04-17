@@ -19,7 +19,9 @@ app.use((req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  res.status(500).json({ message: "Server error" });
+  if (err) {
+    res.status(500).json({ message: "Server error" });
+  }
 });
 
 module.exports = app;
