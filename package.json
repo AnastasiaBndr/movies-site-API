@@ -1,7 +1,7 @@
 {
   "name": "movies-site-api",
   "version": "1.0.0",
-  "private": true,
+  "private": false,
   "description": "",
   "scripts": {
     "start": "cross-env NODE_ENV=production node ./server.js",
