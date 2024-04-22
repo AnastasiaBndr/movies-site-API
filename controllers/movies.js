@@ -1,0 +1,62 @@
+const { HttpError, ctrlWrapper } = require("../helpers");
+const { Movie } = require("../models/movie");
+
+const getAll = async (req, res) => {
+  const { _id: owner } = req.user;
+  const result = await Movie.find({ owner });
+  res.json(result);
+};
+
+const getById = async (req, res) => {
+  const { id } = req.params;
+  const result = await Movie.findById(id);
+  if (!result) {
+    throw HttpError(404, "Not found");
+  }
+  res.json(result);
+};
+
+const getByStatus = async (req, res) => {
+  const { _id: owner } = req.user;
+  const { status } = req.params;
+  const result = await Movie.find({ status: status, owner });
+  if (!result) {
+    throw HttpError(404, "Not found");
+  }
+  res.json(result);
+};
+
+const add = async (req, res, next) => {
+  const { _id: owner } = req.user;
+  const result = await Movie.create({ ...req.body, owner });
+  res.status(201).json(result);
+};
+
+const updateStatus = async (req, res, next) => {
+  const { id } = req.params;
+  const result = await Movie.findByIdAndUpdate(id, req.body, {
+    new: true,
+  });
+  if (!result) {
+    throw HttpError(404, "Not found");
+  }
+  res.json(result);
+};
+
+const deleteById = async (req, res, next) => {
+  const { id } = req.params;
+  const result = await Movie.findByIdAndDelete(id);
+  if (!result) {
+    throw HttpError(404, "Not found");
+  }
+  res.json({ message: "Deleted!" });
+};
+
+module.exports = {
+  getAll: ctrlWrapper(getAll),
+  getById: ctrlWrapper(getById),
+  add: ctrlWrapper(add),
+  deleteById: ctrlWrapper(deleteById),
+  updateStatus: ctrlWrapper(updateStatus),
+  getByStatus: ctrlWrapper(getByStatus),
+};
