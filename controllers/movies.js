@@ -3,7 +3,12 @@ const { Movie } = require("../models/movie");
 
 const getAll = async (req, res) => {
   const { _id: owner } = req.user;
-  const result = await Movie.find({ owner });
+  const { page = 1, limit = 20 } = req.query;
+  const skip = (page - 1) * limit;
+  const result = await Movie.find({ owner }, "", {
+    skip,
+    limit,
+  }).populate("owner", "name username");
   res.json(result);
 };
 
@@ -19,7 +24,12 @@ const getById = async (req, res) => {
 const getByStatus = async (req, res) => {
   const { _id: owner } = req.user;
   const { status } = req.params;
-  const result = await Movie.find({ status: status, owner });
+  const { page = 1, limit = 20 } = req.query;
+  const skip = (page - 1) * limit;
+  const result = await Movie.find({ status: status, owner }, "", {
+    skip,
+    limit,
+  });
   if (!result) {
     throw HttpError(404, "Not found");
   }

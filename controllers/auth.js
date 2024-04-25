@@ -38,24 +38,11 @@ const login = async (req, res, next) => {
   }
   const payload = { id: user._id };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
+  await User.findByIdAndUpdate(user._id, { token }, { new: true });
 
   res.status(201).json({
-    token,
+    message: "Login is successful!",
   });
-};
-
-const getAll = async (req, res) => {
-  const result = await User.find();
-  res.json(result);
-};
-
-const getById = async (req, res) => {
-  const { id } = req.params;
-  const result = await User.findById(id);
-  if (!result) {
-    throw HttpError(404, "Not found");
-  }
-  res.json(result);
 };
 
 const updatebyId = async (req, res, next) => {
@@ -67,20 +54,22 @@ const updatebyId = async (req, res, next) => {
   res.json(result);
 };
 
-const deleteById = async (req, res, next) => {
-  const { id } = req.params;
-  const result = await User.findByIdAndDelete(id);
-  if (!result) {
-    throw HttpError(404, "Not found");
-  }
-  res.json({ message: "Deleted!" });
+const getCurrent = async (req, res) => {
+  const { email, username, name } = req.user;
+  res.json({ name, username, email });
+};
+
+const logout = async (req, res) => {
+  const { _id } = req.user;
+  await User.findByIdAndUpdate(_id, { token: "" });
+
+  res.json({ message: "Logout is successful" });
 };
 
 module.exports = {
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
-  getAll: ctrlWrapper(getAll),
-  getById: ctrlWrapper(getById),
   updatebyId: ctrlWrapper(updatebyId),
-  deleteById: ctrlWrapper(deleteById),
+  getCurrent: ctrlWrapper(getCurrent),
+  logout: ctrlWrapper(logout),
 };
