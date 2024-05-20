@@ -2,7 +2,7 @@ const { Schema, model } = require("mongoose");
 const { handleMongooseError } = require("../helpers");
 const Joi = require("joi");
 
-const emailValidation = /^[\w]+@([\w-])+[\w-]{2,4}$/;
+const emailValidation = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const usernamePattern = /@\w/;
 
 const userSchema = new Schema(
