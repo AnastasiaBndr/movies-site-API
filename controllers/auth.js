@@ -40,9 +40,7 @@ const login = async (req, res, next) => {
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
   await User.findByIdAndUpdate(user._id, { token }, { new: true });
 
-  res.status(201).json({
-    message: "Login is successful!",
-  });
+  res.status(201).json({ token: token });
 };
 
 const updatebyId = async (req, res, next) => {
@@ -57,6 +55,17 @@ const updatebyId = async (req, res, next) => {
 const findByUsername = async (req, res, next) => {
   const { username } = req.params;
   const result = await User.find({ username: username }).select(
+    "name username email token avatar createdAt"
+  );
+  if (!result) {
+    throw HttpError(404, `Not found`);
+  }
+  res.json(result);
+};
+
+const findByEmail = async (req, res, next) => {
+  const { email } = req.params;
+  const result = await User.find({ email: email }).select(
     "name username email token avatar createdAt"
   );
   if (!result) {
@@ -84,4 +93,5 @@ module.exports = {
   getCurrent: ctrlWrapper(getCurrent),
   logout: ctrlWrapper(logout),
   findByUsername: ctrlWrapper(findByUsername),
+  findByEmail: ctrlWrapper(findByEmail),
 };
