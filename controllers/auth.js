@@ -54,6 +54,17 @@ const updatebyId = async (req, res, next) => {
   res.json(result);
 };
 
+const findByUsername = async (req, res, next) => {
+  const { username } = req.params;
+  const result = await User.find({ username: username }).select(
+    "name username email token avatar createdAt"
+  );
+  if (!result) {
+    throw HttpError(404, `Not found`);
+  }
+  res.json(result);
+};
+
 const getCurrent = async (req, res) => {
   const { email, username, name } = req.user;
   res.json({ name, username, email });
@@ -72,4 +83,5 @@ module.exports = {
   updatebyId: ctrlWrapper(updatebyId),
   getCurrent: ctrlWrapper(getCurrent),
   logout: ctrlWrapper(logout),
+  findByUsername: ctrlWrapper(findByUsername),
 };
