@@ -10,6 +10,6 @@ router.post("/auth", validateBody(schemas.loginSchema), ctrl.login);
 router.get("/current", authenticate, ctrl.getCurrent);
 router.post("/logout", authenticate, ctrl.logout);
 router.get("/username/:username", ctrl.findByUsername);
-router.get("/email/:email", authenticate, ctrl.findByEmail);
+router.get("/email/:email", ctrl.findByEmail);
 
 module.exports = router;

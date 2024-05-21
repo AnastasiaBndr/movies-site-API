@@ -54,7 +54,7 @@ const updatebyId = async (req, res, next) => {
 
 const findByUsername = async (req, res, next) => {
   const { username } = req.params;
-  const result = await User.find({ username: username }).select(
+  const result = await User.findOne({ username: username }).select(
     "name username email token avatar createdAt"
   );
   if (!result) {
