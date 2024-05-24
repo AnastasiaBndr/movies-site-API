@@ -22,7 +22,7 @@ const getById = async (req, res) => {
 };
 
 const getByStatus = async (req, res) => {
-  const { _id: owner } = req.user;
+  const { _id: owner } = req.body;
   const { status } = req.params;
   const { page = 1, limit = 20 } = req.query;
   const skip = (page - 1) * limit;
@@ -37,7 +37,7 @@ const getByStatus = async (req, res) => {
 };
 
 const add = async (req, res, next) => {
-  const { _id: owner } = req.user;
+  const { _id: owner } = req.body;
   const result = await Movie.create({ ...req.body, owner });
   res.status(201).json(result);
 };
