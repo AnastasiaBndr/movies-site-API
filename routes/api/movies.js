@@ -4,7 +4,7 @@ const { validateBody, isValidId, authenticate } = require("../../middlewares");
 const { schemas } = require("../../models/movie");
 const router = express.Router();
 
-router.get("/", authenticate, ctrl.getAll);
+router.get("/", ctrl.getAll);
 
 router.get("/:id", authenticate, ctrl.getById);
 
