@@ -6,12 +6,15 @@ const { SECRET_KEY } = process.env;
 
 const register = async (req, res, next) => {
   const { email, password, username } = req.body;
-  const user = await User.findOne({ email, username });
+  const user = await User.findOne({ email });
   const un = await User.findOne({ username });
 
   if (user) {
-    throw HttpError(409, "Email already in use");
-  } else if (un) throw HttpError(409, "Username already in use");
+    throw HttpError(409, "Email or username already in use");
+  }
+  if (un) {
+    throw HttpError(409, "Email or username already in use");
+  }
 
   const hashPassword = await bcrypt.hash(password, 10);
   const newUser = await User.create({ ...req.body, password: hashPassword });
@@ -25,9 +28,10 @@ const register = async (req, res, next) => {
 
 const login = async (req, res, next) => {
   const { email, password, username } = req.body;
-  const user = (await User.findOne({ email }))
-    ? await User.findOne({ email })
-    : await User.findOne({ username });
+  console.log(email);
+  const user = (await User.findOne({ username }))
+    ? await User.findOne({ username })
+    : await User.findOne({ email });
 
   if (!user) {
     throw HttpError(401, "Email or password invalid");
