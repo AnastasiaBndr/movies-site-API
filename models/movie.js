@@ -7,7 +7,7 @@ const mediaTypeList = ["movie", "TV"];
 
 const movieSchema = new Schema(
   {
-    globalId: { type: String, required: true },
+    globalId: { type: String, required: true, unique: true },
     name: {
       type: String,
       required: true,
