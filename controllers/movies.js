@@ -37,7 +37,8 @@ const getByStatus = async (req, res) => {
 };
 
 const add = async (req, res, next) => {
-  const result = await Movie.create(req.body);
+  const { _id: owner } = req.user;
+  const result = await Movie.create({ ...req.body, owner });
   res.status(201).json(result);
 };
 
