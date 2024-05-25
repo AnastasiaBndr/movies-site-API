@@ -7,7 +7,7 @@ const mediaTypeList = ["movie", "TV"];
 
 const movieSchema = new Schema(
   {
-    globalId: { type: String, required: true },
+    globalId: { type: String },
     name: {
       type: String,
       required: true,
@@ -36,7 +36,7 @@ const movieSchema = new Schema(
 );
 
 const addSchema = Joi.object({
-  globalId: Joi.string().required(),
+  globalId: Joi.string(),
   name: Joi.string().required(),
   poster: Joi.string().required(),
   status: Joi.string()
