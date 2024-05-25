@@ -80,7 +80,7 @@ const findByEmail = async (req, res, next) => {
 
 const getCurrent = async (req, res) => {
   const { email, username, name } = req.user;
-  res.json({ name, username, email });
+  res.json({ name, username, email, id });
 };
 
 const logout = async (req, res) => {
