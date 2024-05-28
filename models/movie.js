@@ -3,7 +3,7 @@ const { handleMongooseError } = require("../helpers");
 const Joi = require("joi");
 
 const statusList = ["favorite", "dropped", "watching", "finished"];
-const mediaTypeList = ["movie", "TV"];
+const mediaTypeList = ["movie", "tv"];
 
 const movieSchema = new Schema(
   {
