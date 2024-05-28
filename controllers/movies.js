@@ -21,6 +21,19 @@ const getById = async (req, res) => {
   res.json(result);
 };
 
+const getByGlobalIdTypeAndMediaType = async (req, res) => {
+  const { globalId, media_type } = req.body;
+  const result = await Movie.findOne({
+    globalId: globalId,
+    media_type: media_type,
+  });
+
+  if (!result) {
+    throw HttpError(404, "Not found");
+  }
+  res.json(result);
+};
+
 const getByStatus = async (req, res) => {
   const { _id: owner } = req.body;
   const { status } = req.params;
@@ -38,8 +51,24 @@ const getByStatus = async (req, res) => {
 
 const add = async (req, res, next) => {
   const { _id: owner } = req.user;
-  const result = await Movie.create({ ...req.body, owner });
-  res.status(201).json(result);
+  const { globalId, movie_type } = req.body;
+  const existingMovie = await Movie.findOne({
+    globalId: globalId,
+    movie_type: movie_type,
+  });
+  if (existingMovie) {
+    const result = await Movie.findOneAndUpdate(
+      { globalId: globalId, movie_type: movie_type },
+      { ...req.body, owner },
+      {
+        new: true,
+      }
+    );
+    res.status(201).json(result);
+  } else {
+    const result = await Movie.create({ ...req.body, owner });
+    res.status(201).json(result);
+  }
 };
 
 const updateStatus = async (req, res, next) => {
