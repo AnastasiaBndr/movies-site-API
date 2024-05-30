@@ -12,7 +12,7 @@ router.get("/status/:status", authenticate, ctrl.getByStatus);
 
 router.post("/", authenticate, validateBody(schemas.addSchema), ctrl.add);
 
-router.delete("/:userId", authenticate, isValidId, ctrl.deleteById);
+router.delete("/:userId", authenticate, ctrl.deleteById);
 
 router.patch(
   "/:id/status",
