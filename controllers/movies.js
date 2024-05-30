@@ -21,21 +21,8 @@ const getById = async (req, res) => {
   res.json(result);
 };
 
-const getByGlobalIdTypeAndMediaType = async (req, res) => {
-  const { globalId, media_type } = req.body;
-  const result = await Movie.findOne({
-    globalId: globalId,
-    media_type: media_type,
-  });
-
-  if (!result) {
-    throw HttpError(404, "Not found");
-  }
-  res.json(result);
-};
-
 const getByStatus = async (req, res) => {
-  const { _id: owner } = req.body;
+  const { _id: owner } = req.user;
   const { status } = req.params;
   const { page = 1, limit = 20 } = req.query;
   const skip = (page - 1) * limit;
